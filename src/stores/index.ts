@@ -4,6 +4,8 @@ import { Station, UserPreferences, BusArrival, EnergyData, Report, Rating, Sugge
 import { stations, schools, initialChallengeEntries } from '@/data/stations';
 import { repositories, initRepositories } from '@/data/localRepository';
 import { surveys as seedSurveys } from '@/data/stations';
+import { MockBusProvider } from '@/data/busProvider';
+import { energySimulator } from '@/data/energySimulator';
 
 interface AppState {
   selectedStationId: string | null;
@@ -92,11 +94,9 @@ export const useBusStore = create<BusState>((set) => ({
   selectedStationId: null,
   subscribeToStation: (stationId) => {
     set({ selectedStationId: stationId });
-    import('@/data/busProvider').then(({ MockBusProvider }) => {
-      const provider = new MockBusProvider();
-      return provider.subscribe(stationId, (arrivals: BusArrival[]) => {
-        set({ arrivals });
-      });
+    const provider = new MockBusProvider();
+    return provider.subscribe(stationId, (arrivals: BusArrival[]) => {
+      set({ arrivals });
     });
   }
 }));
@@ -113,13 +113,11 @@ export const useEnergyStore = create<EnergyState>((set) => ({
   hourlyData: [],
   setCurrentData: (data: EnergyData) => set({ currentData: data }),
   subscribe: () => {
-    import('@/data/energySimulator').then(({ energySimulator }) => {
-      const unsub = energySimulator.subscribe((data: EnergyData) => {
-        set({ currentData: data });
-      });
-      set({ hourlyData: energySimulator.generateHourlyData() });
-      return unsub;
+    const unsub = energySimulator.subscribe((data: EnergyData) => {
+      set({ currentData: data });
     });
+    set({ hourlyData: energySimulator.generateHourlyData() });
+    return unsub;
   }
 }));
 
