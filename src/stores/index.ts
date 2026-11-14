@@ -5,7 +5,7 @@ import { stations, schools, initialChallengeEntries } from '@/data/stations';
 import { repositories, initRepositories } from '@/data/localRepository';
 import { surveys as seedSurveys } from '@/data/stations';
 import { MockBusProvider } from '@/data/busProvider';
-import { energySimulator } from '@/data/energySimulator';
+import { energySimulator, generateHourlyData } from '@/data/energySimulator';
 
 interface AppState {
   selectedStationId: string | null;
@@ -116,7 +116,7 @@ export const useEnergyStore = create<EnergyState>((set) => ({
     const unsub = energySimulator.subscribe((data: EnergyData) => {
       set({ currentData: data });
     });
-    set({ hourlyData: energySimulator.generateHourlyData() });
+    set({ hourlyData: generateHourlyData() });
     return unsub;
   }
 }));
