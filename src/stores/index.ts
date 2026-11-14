@@ -92,10 +92,11 @@ export const useBusStore = create<BusState>((set) => ({
   selectedStationId: null,
   subscribeToStation: (stationId) => {
     set({ selectedStationId: stationId });
-    const { MockBusProvider } = require('@/data/busProvider');
-    const provider = new MockBusProvider();
-    return provider.subscribe(stationId, (arrivals: BusArrival[]) => {
-      set({ arrivals });
+    import('@/data/busProvider').then(({ MockBusProvider }) => {
+      const provider = new MockBusProvider();
+      return provider.subscribe(stationId, (arrivals: BusArrival[]) => {
+        set({ arrivals });
+      });
     });
   }
 }));
@@ -112,12 +113,13 @@ export const useEnergyStore = create<EnergyState>((set) => ({
   hourlyData: [],
   setCurrentData: (data: EnergyData) => set({ currentData: data }),
   subscribe: () => {
-    const { energySimulator } = require('@/data/energySimulator');
-    const unsub = energySimulator.subscribe((data: EnergyData) => {
-      set({ currentData: data });
+    import('@/data/energySimulator').then(({ energySimulator }) => {
+      const unsub = energySimulator.subscribe((data: EnergyData) => {
+        set({ currentData: data });
+      });
+      set({ hourlyData: energySimulator.generateHourlyData() });
+      return unsub;
     });
-    set({ hourlyData: require('@/data/energySimulator').generateHourlyData() });
-    return unsub;
   }
 }));
 
@@ -288,7 +290,7 @@ export const useSmartRouteStore = create<SmartRouteState>((set, get) => ({
   roadworks: [],
   crowdReports: new Map(),
   loadData: async () => {
-    const { routes, roadworks } = require('@/data/stations');
+    const { routes, roadworks } = await import('@/data/stations');
     set({ routes, roadworks });
   },
   reportCrowd: (stationId, level) => {
