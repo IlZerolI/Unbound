@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 
 export default defineConfig({
-  base: '/student-stop/',
+  base: '/student_stop/',
   plugins: [
     react(),
     VitePWA({
@@ -18,8 +18,8 @@ export default defineConfig({
         background_color: '#F4F7F5',
         display: 'standalone',
         orientation: 'portrait-primary',
-        scope: '/student-stop/',
-        start_url: '/student-stop/',
+        scope: '/student_stop/',
+        start_url: '/student_stop/',
         icons: [
           {
             src: 'icons/icon-72x72.svg',
