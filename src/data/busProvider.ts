@@ -1,0 +1,184 @@
+import { BusProvider, BusArrival } from '@/types';
+import { busLines, stations } from './stations';
+
+const DELAY_PROBABILITY = 0.3;
+const MAX_DELAY_MINUTES = 10;
+
+function generateArrivalsForStation(stationId: string): BusArrival[] {
+  const station = stations.find(s => s.id === stationId);
+  if (!station) return [];
+
+  const now = Date.now();
+  const arrivals: BusArrival[] = [];
+
+  busLines.forEach((line, lineIndex) => {
+    const numArrivals = 2 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < numArrivals; i++) {
+      const baseMinutes = 3 + i * 12 + lineIndex * 4 + Math.floor(Math.random() * 3);
+      const scheduledTime = now + baseMinutes * 60000;
+      const hasDelay = Math.random() < DELAY_PROBABILITY;
+      const delay = hasDelay ? Math.floor(Math.random() * MAX_DELAY_MINUTES) + 1 : 0;
+      const estimatedTime = scheduledTime + delay * 60000;
+
+      const progress = Math.min(1, Math.max(0, (now - (scheduledTime - 15 * 60000)) / (15 * 60000)));
+      const lat = station.latitude + (Math.random() - 0.5) * 0.01 * progress;
+      const lng = station.longitude + (Math.random() - 0.5) * 0.01 * progress;
+
+      arrivals.push({
+        id: `${line.id}-${stationId}-${i}-${Date.now()}`,
+        lineId: line.id,
+        stationId,
+        destination: line.destinations[Math.floor(Math.random() * line.destinations.length)],
+        scheduledTime,
+        estimatedTime,
+        delay,
+        latitude: lat,
+        longitude: lng,
+        vehicleId: `VH-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`
+      });
+    }
+  });
+
+  return arrivals.sort((a, b) => a.estimatedTime - b.estimatedTime);
+}
+
+export class MockBusProvider implements BusProvider {
+  private subscribers: Map<string, Set<(arrivals: BusArrival[]) => void>> = new Map();
+  private intervals: Map<string, number> = new Map();
+  private currentArrivals: Map<string, BusArrival[]> = new Map();
+
+  async getArrivals(stationId: string): Promise<BusArrival[]> {
+    let arrivals = this.currentArrivals.get(stationId);
+    if (!arrivals) {
+      arrivals = generateArrivalsForStation(stationId);
+      this.currentArrivals.set(stationId, arrivals);
+    }
+    return [...arrivals];
+  }
+
+  subscribe(stationId: string, callback: (arrivals: BusArrival[]) => void): () => void {
+    if (!this.subscribers.has(stationId)) {
+      this.subscribers.set(stationId, new Set());
+      this.startSimulation(stationId);
+    }
+    this.subscribers.get(stationId)!.add(callback);
+
+    const current = this.currentArrivals.get(stationId) || generateArrivalsForStation(stationId);
+    this.currentArrivals.set(stationId, current);
+    callback([...current]);
+
+    return () => {
+      const subs = this.subscribers.get(stationId);
+      if (subs) {
+        subs.delete(callback);
+        if (subs.size === 0) {
+          this.stopSimulation(stationId);
+          this.subscribers.delete(stationId);
+        }
+      }
+    };
+  }
+
+  private startSimulation(stationId: string): void {
+    if (this.intervals.has(stationId)) return;
+
+    const interval = window.setInterval(() => {
+      this.updateArrivals(stationId);
+    }, 3000);
+
+    this.intervals.set(stationId, interval);
+  }
+
+  private stopSimulation(stationId: string): void {
+    const interval = this.intervals.get(stationId);
+    if (interval) {
+      clearInterval(interval);
+      this.intervals.delete(stationId);
+    }
+  }
+
+  private updateArrivals(stationId: string): void {
+    let arrivals = this.currentArrivals.get(stationId);
+    if (!arrivals) {
+      arrivals = generateArrivalsForStation(stationId);
+    }
+
+    const now = Date.now();
+    arrivals = arrivals.map(arrival => {
+      const timeSinceScheduled = now - arrival.scheduledTime;
+      let newDelay = arrival.delay;
+
+      if (Math.random() < 0.1) {
+        const change = Math.floor(Math.random() * 3) - 1;
+        newDelay = Math.max(0, Math.min(MAX_DELAY_MINUTES, newDelay + change));
+      }
+
+      if (timeSinceScheduled > 5 * 60000 && arrival.estimatedTime < now) {
+        return null;
+      }
+
+      const progress = Math.min(1, Math.max(0, (now - (arrival.scheduledTime - 15 * 60000)) / (15 * 60000)));
+      const station = stations.find(s => s.id === stationId);
+      if (station) {
+        return {
+          ...arrival,
+          delay: newDelay,
+          estimatedTime: arrival.scheduledTime + newDelay * 60000,
+          latitude: station.latitude + (Math.random() - 0.5) * 0.01 * progress,
+          longitude: station.longitude + (Math.random() - 0.5) * 0.01 * progress
+        };
+      }
+      return { ...arrival, delay: newDelay, estimatedTime: arrival.scheduledTime + newDelay * 60000 };
+    }).filter((a): a is BusArrival => a !== null);
+
+    while (arrivals.length < 4) {
+      const line = busLines[Math.floor(Math.random() * busLines.length)];
+      const baseMinutes = 15 + Math.floor(Math.random() * 10);
+      const scheduledTime = now + baseMinutes * 60000;
+      const hasDelay = Math.random() < DELAY_PROBABILITY;
+      const delay = hasDelay ? Math.floor(Math.random() * MAX_DELAY_MINUTES) + 1 : 0;
+      const station = stations.find(s => s.id === stationId)!;
+
+      arrivals.push({
+        id: `${line.id}-${stationId}-new-${Date.now()}`,
+        lineId: line.id,
+        stationId,
+        destination: line.destinations[Math.floor(Math.random() * line.destinations.length)],
+        scheduledTime,
+        estimatedTime: scheduledTime + delay * 60000,
+        delay,
+        latitude: station.latitude,
+        longitude: station.longitude,
+        vehicleId: `VH-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`
+      });
+    }
+
+    arrivals.sort((a, b) => a.estimatedTime - b.estimatedTime);
+    this.currentArrivals.set(stationId, arrivals);
+
+    const subs = this.subscribers.get(stationId);
+    if (subs) {
+      subs.forEach(cb => cb([...arrivals]));
+    }
+  }
+}
+
+export class GtfsRealtimeProvider implements BusProvider {
+  private readonly _feedUrl: string;
+
+  constructor(feedUrl: string) {
+    this._feedUrl = feedUrl;
+    // Stored for future GTFS-RT implementation
+    void this._feedUrl;
+  }
+
+  async getArrivals(_stationId: string): Promise<BusArrival[]> {
+    console.warn('GtfsRealtimeProvider not implemented - using mock data');
+    return [];
+  }
+
+  subscribe(_stationId: string, _callback: (arrivals: BusArrival[]) => void): () => void {
+    console.warn('GtfsRealtimeProvider subscribe not implemented');
+    return () => {};
+  }
+}
