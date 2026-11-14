@@ -14,12 +14,12 @@ let firebaseApp: any = null;
 let firestore: any = null;
 let initialized = false;
 
-export function initializeFirebase(config: FirebaseConfig): boolean {
+export async function initializeFirebase(config: FirebaseConfig): Promise<boolean> {
   if (initialized) return true;
 
   try {
-    const { initializeApp } = require('firebase/app');
-    const { getFirestore } = require('firebase/firestore');
+    const { initializeApp } = await import('firebase/app');
+    const { getFirestore } = await import('firebase/firestore');
 
     firebaseApp = initializeApp(config);
     firestore = getFirestore(firebaseApp);

@@ -47,7 +47,7 @@ describe('Student Voice - voting', () => {
     const survey = state.surveys.find(s => s.id === 'test-survey');
     expect(survey).toBeDefined();
     expect(survey!.options.find(o => o.id === 'opt-1')!.votes).toBe(1);
-    expect(state.votedSurveys.has('test-survey:opt-1')).toBe(true);
+    expect(state.votedSurveys.has('test-survey')).toBe(true);
   });
 
   it('should prevent voting twice on same survey', async () => {
@@ -71,8 +71,8 @@ describe('Student Voice - voting', () => {
     const survey = state.surveys.find(s => s.id === 'test-survey-2');
     expect(survey!.options.find(o => o.id === 'opt-1')!.votes).toBe(1);
     expect(survey!.options.find(o => o.id === 'opt-2')!.votes).toBe(0);
-    expect(state.votedSurveys.has('test-survey-2:opt-1')).toBe(true);
-    expect(state.votedSurveys.has('test-survey-2:opt-2')).toBe(false);
+    expect(state.votedSurveys.has('test-survey-2')).toBe(true);
+    expect(state.votedSurveys.has('test-survey-2')).toBe(true);
   });
 
   it('should allow voting on different surveys', async () => {
@@ -97,7 +97,7 @@ describe('Student Voice - voting', () => {
     await useStudentVoiceStore.getState().voteSurvey('survey-2', 'b');
 
     const state = useStudentVoiceStore.getState();
-    expect(state.votedSurveys.has('survey-1:a')).toBe(true);
-    expect(state.votedSurveys.has('survey-2:b')).toBe(true);
+    expect(state.votedSurveys.has('survey-1')).toBe(true);
+    expect(state.votedSurveys.has('survey-2')).toBe(true);
   });
 });

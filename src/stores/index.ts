@@ -191,12 +191,11 @@ export const useStudentVoiceStore = create<StudentVoiceState>((set, get) => ({
       repositories.suggestions.getAll(),
       repositories.surveyVotes.getAll()
     ]);
-    const votedSet = new Set(votes.map(v => `${v.surveyId}:${v.optionId}`));
+    const votedSet = new Set(votes.map(v => v.surveyId));
     set({ surveys, ratings, suggestions, votedSurveys: votedSet });
   },
   voteSurvey: async (surveyId, optionId) => {
-    const key = `${surveyId}:${optionId}`;
-    if (get().votedSurveys.has(key)) return;
+    if (get().votedSurveys.has(surveyId)) return;
 
     const survey = get().surveys.find(s => s.id === surveyId);
     if (!survey) return;
@@ -210,7 +209,7 @@ export const useStudentVoiceStore = create<StudentVoiceState>((set, get) => ({
 
     set({
       surveys: get().surveys.map(s => s.id === surveyId ? { ...s, options: updatedOptions } : s),
-      votedSurveys: new Set([...get().votedSurveys, key])
+      votedSurveys: new Set([...get().votedSurveys, surveyId])
     });
   },
   submitRating: async (rating) => {

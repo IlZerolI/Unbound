@@ -34,6 +34,9 @@ function ChallengeIcon() {
 }
 
 function StationCard({ station, onChange }: { station: typeof stations[0] | null; onChange: () => void }) {
+  const nextBus = useBusStore(state => state.arrivals[0]);
+  const energy = useEnergyStore(state => state.currentData);
+
   if (!station) {
     return (
       <Link to="/select-station" className="station-card-empty" style={{
@@ -51,9 +54,6 @@ function StationCard({ station, onChange }: { station: typeof stations[0] | null
       </Link>
     );
   }
-
-  const nextBus = useBusStore(state => state.arrivals[0]);
-  const energy = useEnergyStore(state => state.currentData);
 
   return (
     <div className="station-card" style={{

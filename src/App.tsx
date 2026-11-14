@@ -18,6 +18,14 @@ import { StationSelectorScreen } from '@/screens/StationSelectorScreen';
 function AppContent() {
   const { hasHydrated, selectedStationId, userPreferences } = useAppStore();
 
+  const theme = userPreferences.theme === 'system'
+    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    : userPreferences.theme;
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const stationParam = params.get('station');
@@ -43,14 +51,6 @@ function AppContent() {
       </div>
     );
   }
-
-  const theme = userPreferences.theme === 'system'
-    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-    : userPreferences.theme;
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
 
   return (
     <HashRouter>
