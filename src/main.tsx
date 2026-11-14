@@ -5,7 +5,7 @@ import './styles/globals.css';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/student-stop/sw.js').catch(() => {});
+    navigator.serviceWorker.register('/student_stop/sw.js').catch(() => {});
   });
 }
 
