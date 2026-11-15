@@ -7,7 +7,8 @@ export const translations = {
     home: 'Početna',
     tram: 'Tramvaj',
     energy: 'Energija',
-    more: 'Više'
+    more: 'Više',
+    menu: 'Meni'
   },
   home: {
     myStation: 'Moje stajalište',
@@ -19,6 +20,8 @@ export const translations = {
     delayed: 'Kasni',
     minutes: 'min',
     now: 'Sad',
+    quickActions: 'Brze akcije',
+    announcements: 'Obavijesti',
     tiles: {
       safety: {
         title: 'Sigurnost',
