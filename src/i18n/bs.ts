@@ -204,9 +204,9 @@ export const translations = {
   settings: {
     title: 'Postavke',
     theme: 'Tema',
-    light: 'Svjetla',
-    dark: 'Tamna',
-    system: 'Sistemska',
+    themeSystem: 'Sistemska',
+    themeLight: 'Svjetla',
+    themeDark: 'Tamna',
     highContrast: 'Visoki kontrast',
     largeText: 'Veličini tekst',
     language: 'Jezik',
@@ -241,7 +241,27 @@ export const translations = {
     copied: 'Kopirano!',
     done: 'Gotovo',
     skip: 'Preskoči',
-    continue: 'Nastavi'
+    continue: 'Nastavi',
+    open: 'Otvori'
+  },
+  more: {
+    sections: {
+      appearance: 'Izgled',
+      notifications: 'Obavijesti',
+      about: 'O aplikaciji',
+      links: 'Linkovi',
+      dangerZone: 'Opasna zona'
+    },
+    about: {
+      version: 'Verzija',
+      appName: 'Naziv aplikacije',
+      description: 'Opis'
+    },
+    links: {
+      privacy: 'Privatnost i postavke',
+      github: 'GitHub repozitorij',
+      reportIssue: 'Prijavi problem'
+    }
   },
   accessibility: {
     openMenu: 'Otvori meni',

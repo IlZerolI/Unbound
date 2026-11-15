@@ -14,6 +14,7 @@ import { ChallengeScreen } from '@/screens/ChallengeScreen';
 import { QRScreen } from '@/screens/QRScreen';
 import { SettingsScreen } from '@/screens/SettingsScreen';
 import { StationSelectorScreen } from '@/screens/StationSelectorScreen';
+import { MoreScreen } from '@/screens/MoreScreen';
 
 function AppContent() {
   const { hasHydrated, selectedStationId, userPreferences } = useAppStore();
@@ -67,6 +68,7 @@ function AppContent() {
           <Route path="/qr" element={<QRScreen />} />
           <Route path="/settings" element={<SettingsScreen />} />
           <Route path="/select-station" element={<StationSelectorScreen />} />
+          <Route path="/more" element={<MoreScreen />} />
         </Routes>
       </Layout>
     </HashRouter>
