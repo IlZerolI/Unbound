@@ -16,6 +16,7 @@ export interface TramLine {
   name: string;
   color: string;
   destinations: string[];
+  stationOrder: string[];
 }
 
 export interface TramArrival {

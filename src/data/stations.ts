@@ -75,28 +75,32 @@ export const tramLines: TramLine[] = [
     number: '1',
     name: 'Baščaršija - Ilidža',
     color: '#0B7A4B',
-    destinations: ['Baščaršija', 'Centar', 'Ilidža']
+    destinations: ['Baščaršija', 'Centar', 'Ilidža'],
+    stationOrder: ['pocetno-stajaliste', 'zmaja-od-bosne', 'tehnicka-skola', 'marsal-tito', 'skenderija', 'univerzitet']
   },
   {
     id: 'line-3',
     number: '3',
     name: 'Novi Grad - Baščaršija',
     color: '#FFB703',
-    destinations: ['Novi Grad', 'Centar', 'Baščaršija']
+    destinations: ['Novi Grad', 'Centar', 'Baščaršija'],
+    stationOrder: ['univerzitet', 'marsal-tito', 'tehnicka-skola', 'zmaja-od-bosne', 'pocetno-stajaliste']
   },
   {
     id: 'line-5',
     number: '5',
     name: 'Vogošća - Baščaršija',
     color: '#1A3A2E',
-    destinations: ['Vogošća', 'Centar', 'Baščaršija']
+    destinations: ['Vogošća', 'Centar', 'Baščaršija'],
+    stationOrder: ['univerzitet', 'skenderija', 'tehnicka-skola', 'zmaja-od-bosne', 'pocetno-stajaliste']
   },
   {
     id: 'line-6',
     number: '6',
     name: 'Ilidža - Baščaršija',
     color: '#D32F2F',
-    destinations: ['Ilidža', 'Centar', 'Baščaršija']
+    destinations: ['Ilidža', 'Centar', 'Baščaršija'],
+    stationOrder: ['skenderija', 'marsal-tito', 'tehnicka-skola', 'zmaja-od-bosne', 'pocetno-stajaliste']
   }
 ];
 

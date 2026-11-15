@@ -5,6 +5,49 @@ const DELAY_PROBABILITY = 0.3;
 const MAX_DELAY_MINUTES = 10;
 const OCCUPANCY_OPTIONS: ('empty' | 'half' | 'full')[] = ['empty', 'half', 'full'];
 
+function getStationPositionOnLine(line: typeof tramLines[0], stationId: string): { index: number; prevStation: typeof stations[0] | null; nextStation: typeof stations[0] | null; progressOnSegment: number } {
+  const stationOrder = line.stationOrder || [];
+  const index = stationOrder.indexOf(stationId);
+  if (index === -1) return { index: -1, prevStation: null, nextStation: null, progressOnSegment: 0 };
+
+  const prevStationId = index > 0 ? stationOrder[index - 1] : null;
+  const nextStationId = index < stationOrder.length - 1 ? stationOrder[index + 1] : null;
+
+  const prevStation = prevStationId ? stations.find(s => s.id === prevStationId) || null : null;
+  const nextStation = nextStationId ? stations.find(s => s.id === nextStationId) || null : null;
+
+  return { index, prevStation, nextStation, progressOnSegment: 0 };
+}
+
+function calculateTramPosition(line: typeof tramLines[0], stationId: string, progress: number): { lat: number; lng: number } {
+  const station = stations.find(s => s.id === stationId);
+  if (!station) return { lat: 0, lng: 0 };
+
+  const { prevStation, nextStation } = getStationPositionOnLine(line, stationId);
+
+  // If at end of line or no adjacent stations, stay at station
+  if (!prevStation && !nextStation) {
+    return { lat: station.latitude, lng: station.longitude };
+  }
+
+  // Determine direction: if progress < 0.5, coming from prev; if > 0.5, going to next
+  // Actually, progress 0 = just left previous station, progress 1 = arriving at this station
+  const fromStation = progress < 0.5 ? prevStation : station;
+  const toStation = progress < 0.5 ? station : nextStation;
+
+  if (!fromStation || !toStation) {
+    return { lat: station.latitude, lng: station.longitude };
+  }
+
+  // Normalize progress for this segment
+  const segmentProgress = progress < 0.5 ? progress * 2 : (progress - 0.5) * 2;
+
+  const lat = fromStation.latitude + (toStation.latitude - fromStation.latitude) * segmentProgress;
+  const lng = fromStation.longitude + (toStation.longitude - fromStation.longitude) * segmentProgress;
+
+  return { lat, lng };
+}
+
 function generateArrivalsForStation(stationId: string): TramArrival[] {
   const station = stations.find(s => s.id === stationId);
   if (!station) return [];
@@ -13,6 +56,9 @@ function generateArrivalsForStation(stationId: string): TramArrival[] {
   const arrivals: TramArrival[] = [];
 
   tramLines.forEach((line, lineIndex) => {
+    const stationOrder = line.stationOrder || [];
+    if (!stationOrder.includes(stationId)) return; // Line doesn't stop here
+
     const numArrivals = 2 + Math.floor(Math.random() * 2);
     for (let i = 0; i < numArrivals; i++) {
       const baseMinutes = 3 + i * 12 + lineIndex * 4 + Math.floor(Math.random() * 3);
@@ -22,8 +68,7 @@ function generateArrivalsForStation(stationId: string): TramArrival[] {
       const estimatedTime = scheduledTime + delay * 60000;
 
       const progress = Math.min(1, Math.max(0, (now - (scheduledTime - 15 * 60000)) / (15 * 60000)));
-      const lat = station.latitude + (Math.random() - 0.5) * 0.01 * progress;
-      const lng = station.longitude + (Math.random() - 0.5) * 0.01 * progress;
+      const { lat, lng } = calculateTramPosition(line, stationId, progress);
 
       arrivals.push({
         id: `${line.id}-${stationId}-${i}-${Date.now()}`,
@@ -120,26 +165,36 @@ export class MockTramProvider implements TramProvider {
       }
 
       const progress = Math.min(1, Math.max(0, (now - (arrival.scheduledTime - 15 * 60000)) / (15 * 60000)));
-      const station = stations.find(s => s.id === stationId);
-      if (station) {
-        return {
-          ...arrival,
-          delay: newDelay,
-          estimatedTime: arrival.scheduledTime + newDelay * 60000,
-          latitude: station.latitude + (Math.random() - 0.5) * 0.01 * progress,
-          longitude: station.longitude + (Math.random() - 0.5) * 0.01 * progress
-        };
+      const line = tramLines.find(l => l.id === arrival.lineId);
+      let lat = arrival.latitude;
+      let lng = arrival.longitude;
+      if (line) {
+        const pos = calculateTramPosition(line, stationId, progress);
+        lat = pos.lat;
+        lng = pos.lng;
       }
-      return { ...arrival, delay: newDelay, estimatedTime: arrival.scheduledTime + newDelay * 60000 };
+
+      return {
+        ...arrival,
+        delay: newDelay,
+        estimatedTime: arrival.scheduledTime + newDelay * 60000,
+        latitude: lat,
+        longitude: lng
+      };
     }).filter((a): a is TramArrival => a !== null);
 
     while (arrivals.length < 4) {
       const line = tramLines[Math.floor(Math.random() * tramLines.length)];
+      const stationOrder = line.stationOrder || [];
+      if (!stationOrder.includes(stationId)) continue;
+
       const baseMinutes = 15 + Math.floor(Math.random() * 10);
       const scheduledTime = now + baseMinutes * 60000;
       const hasDelay = Math.random() < DELAY_PROBABILITY;
       const delay = hasDelay ? Math.floor(Math.random() * MAX_DELAY_MINUTES) + 1 : 0;
-      const station = stations.find(s => s.id === stationId)!;
+
+      const progress = 0;
+      const { lat, lng } = calculateTramPosition(line, stationId, progress);
 
       arrivals.push({
         id: `${line.id}-${stationId}-new-${Date.now()}`,
@@ -149,8 +204,8 @@ export class MockTramProvider implements TramProvider {
         scheduledTime,
         estimatedTime: scheduledTime + delay * 60000,
         delay,
-        latitude: station.latitude,
-        longitude: station.longitude,
+        latitude: lat,
+        longitude: lng,
         vehicleId: `TR-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`,
         occupancy: OCCUPANCY_OPTIONS[Math.floor(Math.random() * OCCUPANCY_OPTIONS.length)]
       });
