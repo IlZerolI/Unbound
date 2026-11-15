@@ -125,7 +125,7 @@ export function HomeScreen() {
   const setSelectedStation = useAppStore(state => state.setSelectedStation);
   const getStationById = useAppStore(state => state.getStationById);
   const allStations = useAppStore(state => state.stations);
-  const selectedStation = selectedStationId ? getStationById(selectedStationId) : null;
+  const selectedStation = selectedStationId ? getStationById(selectedStationId) ?? null : null;
 
   useEffect(() => {
     const unsubTram = useTramStore.getState().subscribeToStation(selectedStationId || allStations[0].id);
