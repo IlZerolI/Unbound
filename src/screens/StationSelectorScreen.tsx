@@ -1,30 +1,36 @@
 import { useAppStore } from '@/stores';
 import { t } from '@/i18n/bs';
 import { stations } from '@/data/stations';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export function StationSelectorScreen() {
   const { selectedStationId, setSelectedStation } = useAppStore();
+  const navigate = useNavigate();
+
+  const handleSelect = (stationId: string) => {
+    setSelectedStation(stationId);
+    navigate('/');
+  };
 
   return (
     <div className="station-selector-screen" style={{ padding: 'var(--spacing-md)', paddingBottom: 'calc(var(--nav-height) + var(--safe-area-bottom) + var(--spacing-md))' }}>
       <header style={{ marginBottom: 'var(--spacing-lg)' }}>
         <h1 className="section-title" style={{ marginBottom: 'var(--spacing-xs)' }}>{t('stationLink.selectStation')}</h1>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>Odaberite svoju stanicu za personalizovan sadržaj</p>
+        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>Odaberite svoje stajalište za personalizovan sadržaj</p>
       </header>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
         {stations.map(station => (
-          <Link
+          <button
             key={station.id}
-            to="/"
-            onClick={() => { setSelectedStation(station.id); window.location.hash = '#/'; }}
+            onClick={() => handleSelect(station.id)}
             style={{
               display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)',
               padding: 'var(--spacing-md)', background: 'var(--color-white)', borderRadius: 'var(--radius-lg)',
               border: `2px solid ${selectedStationId === station.id ? 'var(--color-primary)' : 'var(--color-border)'}`,
               boxShadow: selectedStationId === station.id ? 'var(--shadow-md)' : 'var(--shadow-sm)',
-              textDecoration: 'none', color: 'inherit', transition: 'all 0.2s ease'
+              textDecoration: 'none', color: 'inherit', transition: 'all 0.2s ease',
+              width: '100%', textAlign: 'left', cursor: 'pointer'
             }}
             aria-current={selectedStationId === station.id ? 'page' : undefined}
           >
@@ -51,7 +57,7 @@ export function StationSelectorScreen() {
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             )}
-          </Link>
+          </button>
         ))}
       </div>
 
