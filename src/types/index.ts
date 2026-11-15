@@ -10,7 +10,7 @@ export interface Station {
   bikeCapacity: number;
 }
 
-export interface BusLine {
+export interface TramLine {
   id: string;
   number: string;
   name: string;
@@ -18,7 +18,7 @@ export interface BusLine {
   destinations: string[];
 }
 
-export interface BusArrival {
+export interface TramArrival {
   id: string;
   lineId: string;
   stationId: string;
@@ -162,9 +162,9 @@ export interface Repository<T> {
   delete(id: string): Promise<boolean>;
 }
 
-export interface BusProvider {
-  getArrivals(stationId: string): Promise<BusArrival[]>;
-  subscribe(stationId: string, callback: (arrivals: BusArrival[]) => void): () => void;
+export interface TramProvider {
+  getArrivals(stationId: string): Promise<TramArrival[]>;
+  subscribe(stationId: string, callback: (arrivals: TramArrival[]) => void): () => void;
 }
 
 export interface EnergySimulator {

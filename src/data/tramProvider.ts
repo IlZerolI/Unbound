@@ -1,17 +1,17 @@
-import { BusProvider, BusArrival } from '@/types';
-import { busLines, stations } from './stations';
+import { TramProvider, TramArrival } from '@/types';
+import { tramLines, stations } from './stations';
 
 const DELAY_PROBABILITY = 0.3;
 const MAX_DELAY_MINUTES = 10;
 
-function generateArrivalsForStation(stationId: string): BusArrival[] {
+function generateArrivalsForStation(stationId: string): TramArrival[] {
   const station = stations.find(s => s.id === stationId);
   if (!station) return [];
 
   const now = Date.now();
-  const arrivals: BusArrival[] = [];
+  const arrivals: TramArrival[] = [];
 
-  busLines.forEach((line, lineIndex) => {
+  tramLines.forEach((line, lineIndex) => {
     const numArrivals = 2 + Math.floor(Math.random() * 2);
     for (let i = 0; i < numArrivals; i++) {
       const baseMinutes = 3 + i * 12 + lineIndex * 4 + Math.floor(Math.random() * 3);
@@ -34,7 +34,7 @@ function generateArrivalsForStation(stationId: string): BusArrival[] {
         delay,
         latitude: lat,
         longitude: lng,
-        vehicleId: `VH-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`
+        vehicleId: `TR-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`
       });
     }
   });
@@ -42,12 +42,12 @@ function generateArrivalsForStation(stationId: string): BusArrival[] {
   return arrivals.sort((a, b) => a.estimatedTime - b.estimatedTime);
 }
 
-export class MockBusProvider implements BusProvider {
-  private subscribers: Map<string, Set<(arrivals: BusArrival[]) => void>> = new Map();
+export class MockTramProvider implements TramProvider {
+  private subscribers: Map<string, Set<(arrivals: TramArrival[]) => void>> = new Map();
   private intervals: Map<string, number> = new Map();
-  private currentArrivals: Map<string, BusArrival[]> = new Map();
+  private currentArrivals: Map<string, TramArrival[]> = new Map();
 
-  async getArrivals(stationId: string): Promise<BusArrival[]> {
+  async getArrivals(stationId: string): Promise<TramArrival[]> {
     let arrivals = this.currentArrivals.get(stationId);
     if (!arrivals) {
       arrivals = generateArrivalsForStation(stationId);
@@ -56,7 +56,7 @@ export class MockBusProvider implements BusProvider {
     return [...arrivals];
   }
 
-  subscribe(stationId: string, callback: (arrivals: BusArrival[]) => void): () => void {
+  subscribe(stationId: string, callback: (arrivals: TramArrival[]) => void): () => void {
     if (!this.subscribers.has(stationId)) {
       this.subscribers.set(stationId, new Set());
       this.startSimulation(stationId);
@@ -129,10 +129,10 @@ export class MockBusProvider implements BusProvider {
         };
       }
       return { ...arrival, delay: newDelay, estimatedTime: arrival.scheduledTime + newDelay * 60000 };
-    }).filter((a): a is BusArrival => a !== null);
+    }).filter((a): a is TramArrival => a !== null);
 
     while (arrivals.length < 4) {
-      const line = busLines[Math.floor(Math.random() * busLines.length)];
+      const line = tramLines[Math.floor(Math.random() * tramLines.length)];
       const baseMinutes = 15 + Math.floor(Math.random() * 10);
       const scheduledTime = now + baseMinutes * 60000;
       const hasDelay = Math.random() < DELAY_PROBABILITY;
@@ -149,7 +149,7 @@ export class MockBusProvider implements BusProvider {
         delay,
         latitude: station.latitude,
         longitude: station.longitude,
-        vehicleId: `VH-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`
+        vehicleId: `TR-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`
       });
     }
 
@@ -163,21 +163,20 @@ export class MockBusProvider implements BusProvider {
   }
 }
 
-export class GtfsRealtimeProvider implements BusProvider {
+export class GtfsRealtimeProvider implements TramProvider {
   private readonly _feedUrl: string;
 
   constructor(feedUrl: string) {
     this._feedUrl = feedUrl;
-    // Stored for future GTFS-RT implementation
     void this._feedUrl;
   }
 
-  async getArrivals(_stationId: string): Promise<BusArrival[]> {
+  async getArrivals(_stationId: string): Promise<TramArrival[]> {
     console.warn('GtfsRealtimeProvider not implemented - using mock data');
     return [];
   }
 
-  subscribe(_stationId: string, _callback: (arrivals: BusArrival[]) => void): () => void {
+  subscribe(_stationId: string, _callback: (arrivals: TramArrival[]) => void): () => void {
     console.warn('GtfsRealtimeProvider subscribe not implemented');
     return () => {};
   }

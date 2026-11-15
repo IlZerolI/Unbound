@@ -1,18 +1,18 @@
 export const translations = {
   app: {
     name: 'Student Stop',
-    tagline: 'Pametna stanica za pametnu mladež'
+    tagline: 'Pametno stajalište za pametnu mladež'
   },
   nav: {
     home: 'Početna',
-    bus: 'Autobus',
+    tram: 'Tramvaj',
     energy: 'Energija',
     more: 'Više'
   },
   home: {
-    myStation: 'Moja stanica',
-    changeStation: 'Promijeni stanicu',
-    nextBus: 'Sljedeći autobus',
+    myStation: 'Moje stajalište',
+    changeStation: 'Promijeni stajalište',
+    nextTram: 'Sljedeći tramvaj',
     line: 'Linija',
     destination: 'Odredište',
     arrivesIn: 'Stiže za',
@@ -46,8 +46,8 @@ export const translations = {
       }
     }
   },
-  bus: {
-    title: 'Autobus u realnom vremenu',
+  tram: {
+    title: 'Tramvaj u realnom vremenu',
     map: 'Mapa',
     arrivals: 'Dolasci',
     line: 'Linija',
@@ -68,7 +68,7 @@ export const translations = {
     title: 'Praćenje energije',
     solar: 'Solarni paneli',
     kinetic: 'Kinetičke ploče',
-    consumption: 'Potrošnja stanice',
+    consumption: 'Potrošnja stajališta',
     battery: 'Baterija',
     batteryLevel: 'Stanje baterije',
     hourlyChart: 'Po satima',
@@ -83,7 +83,7 @@ export const translations = {
     simulator: 'Simulator'
   },
   safeStop: {
-    title: 'Sigurna stanica',
+    title: 'Sigurno stajalište',
     lighting: 'Rasvjeta',
     cameras: 'Kamere',
     equipment: 'Oprema',
@@ -132,13 +132,13 @@ export const translations = {
   studentVoice: {
     title: 'Glas učenika',
     surveys: 'Ankete',
-    ratings: 'Ocjene stanice',
+    ratings: 'Ocjene stajališta',
     cleanliness: 'Čistoća',
     safety: 'Sigurnost',
     comfort: 'Udobnost',
     submitRating: 'Pošalji ocjenu',
     suggestion: 'Prijedlog nove funkcije',
-    suggestionPlaceholder: 'Što biste želeli da stanica ima?',
+    suggestionPlaceholder: 'Što biste želeli da stajalište ima?',
     submitSuggestion: 'Pošalji prijedlog',
     vote: 'Glasaj',
     voted: 'Glasali ste',
@@ -148,7 +148,7 @@ export const translations = {
   },
   smartRoute: {
     title: 'Pametna ruta',
-    nearestStops: 'Najbliže stanice',
+    nearestStops: 'Najbliža stajališta',
     distance: 'Udaljenost',
     walking: 'Pješke',
     cycling: 'Bicikl',
@@ -159,11 +159,11 @@ export const translations = {
     heating: 'Grijanje',
     heaterOn: 'Uključi grijanje',
     heaterOff: 'Isključi grijanje',
-    bikeStation: 'Bicikl stanica',
+    bikeStation: 'Bicikl stajalište',
     freeSpots: 'Slobodna mjesta',
     occupiedSpots: 'Zauzeta mjesta',
     totalSpots: 'Ukupno mjesta',
-    locationDenied: 'Lokacija nije dopuštena. Prikazujem sve stanice bez udaljenosti.',
+    locationDenied: 'Lokacija nije dopuštena. Prikazujem sva stajališta bez udaljenosti.',
     enableLocation: 'Omogući lokaciju',
     calculating: 'Izračunavanje...'
   },
@@ -184,19 +184,19 @@ export const translations = {
     totalPoints: 'Ukupno bodova'
   },
   qr: {
-    title: 'QR kod stanice',
-    stationQR: 'QR kod za stanicu',
+    title: 'QR kod stajališta',
+    stationQR: 'QR kod za stajalište',
     shareLink: 'Podijeli link',
     copyLink: 'Kopiraj link',
     copied: 'Link kopiran!',
-    scanText: 'Skeniraj i prati autobus',
+    scanText: 'Skeniraj i prati tramvaj',
     generalQR: 'Opći QR kod aplikacije',
     printPage: 'Stranica za štampu'
   },
   stationLink: {
-    connected: 'Povezani ste sa stanicom',
-    invalid: 'Nevažeća stanica. Molimo odaberite stanicu ručno.',
-    selectStation: 'Odaberite stanicu'
+    connected: 'Povezani ste sa stajalištem',
+    invalid: 'Nevažeće stajalište. Molimo odaberite stajalište ručno.',
+    selectStation: 'Odaberite stajalište'
   },
   settings: {
     title: 'Postavke',

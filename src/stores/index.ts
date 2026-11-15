@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Station, UserPreferences, BusArrival, EnergyData, Report, Rating, Suggestion, Survey, ChallengeEntry, School, Route, Roadwork, SuspiciousReport, StationEquipment } from '@/types';
+import { Station, UserPreferences, TramArrival, EnergyData, Report, Rating, Suggestion, Survey, ChallengeEntry, School, Route, Roadwork, SuspiciousReport, StationEquipment } from '@/types';
 import { stations, schools, initialChallengeEntries } from '@/data/stations';
 import { repositories, initRepositories } from '@/data/localRepository';
 import { surveys as seedSurveys } from '@/data/stations';
-import { MockBusProvider } from '@/data/busProvider';
+import { MockTramProvider } from '@/data/tramProvider';
 import { energySimulator, generateHourlyData } from '@/data/energySimulator';
 
 interface AppState {
@@ -81,21 +81,21 @@ export const useAppStore = create<AppState>()(
   )
 );
 
-interface BusState {
-  arrivals: BusArrival[];
-  setArrivals: (arrivals: BusArrival[]) => void;
+interface TramState {
+  arrivals: TramArrival[];
+  setArrivals: (arrivals: TramArrival[]) => void;
   selectedStationId: string | null;
   subscribeToStation: (stationId: string) => () => void;
 }
 
-export const useBusStore = create<BusState>((set) => ({
+export const useTramStore = create<TramState>((set) => ({
   arrivals: [],
-  setArrivals: (arrivals: BusArrival[]) => set({ arrivals }),
+  setArrivals: (arrivals: TramArrival[]) => set({ arrivals }),
   selectedStationId: null,
   subscribeToStation: (stationId) => {
     set({ selectedStationId: stationId });
-    const provider = new MockBusProvider();
-    return provider.subscribe(stationId, (arrivals: BusArrival[]) => {
+    const provider = new MockTramProvider();
+    return provider.subscribe(stationId, (arrivals: TramArrival[]) => {
       set({ arrivals });
     });
   }

@@ -5,7 +5,7 @@ import { t } from '@/i18n/bs';
 
 const navItems = [
   { path: '/', label: t('nav.home'), icon: HomeIcon },
-  { path: '/bus', label: t('nav.bus'), icon: BusIcon },
+  { path: '/tram', label: t('nav.tram'), icon: TramIcon },
   { path: '/energy', label: t('nav.energy'), icon: EnergyIcon },
   { path: '/more', label: t('nav.more'), icon: MoreIcon }
 ] as const;
@@ -19,13 +19,13 @@ function HomeIcon({ active }: { active: boolean }) {
   );
 }
 
-function BusIcon({ active }: { active: boolean }) {
+function TramIcon({ active }: { active: boolean }) {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M8 6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8H4V8a2 2 0 0 1 2-2h2V6Z" />
-      <circle cx="8" cy="18" r="2" />
-      <circle cx="16" cy="18" r="2" />
-      <line x1="4" y1="14" x2="20" y2="14" />
+      <path d="M4 17h16" />
+      <path d="M4 17l-1.5 -6h19l-1.5 6" />
+      <circle cx="7" cy="17" r="1" />
+      <circle cx="17" cy="17" r="1" />
     </svg>
   );
 }

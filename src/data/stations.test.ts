@@ -22,10 +22,10 @@ describe('Station URL parsing', () => {
 
   it('should parse valid station ID from URL', () => {
     Object.defineProperty(window, 'location', {
-      value: { search: '?station=gimnazija' },
+      value: { search: '?station=tehnicka-skola' },
       writable: true
     });
-    expect(parseStationFromUrl()).toBe('gimnazija');
+    expect(parseStationFromUrl()).toBe('tehnicka-skola');
   });
 
   it('should return null for invalid station ID', () => {
@@ -46,16 +46,16 @@ describe('Station URL parsing', () => {
 
   it('should handle multiple params', () => {
     Object.defineProperty(window, 'location', {
-      value: { search: '?foo=bar&station=medicinska-skola&baz=qux' },
+      value: { search: '?foo=bar&station=marsal-tito&baz=qux' },
       writable: true
     });
-    expect(parseStationFromUrl()).toBe('medicinska-skola');
+    expect(parseStationFromUrl()).toBe('marsal-tito');
   });
 
   it('getStationById should return station for valid ID', () => {
-    const station = getStationById('gimnazija');
+    const station = getStationById('tehnicka-skola');
     expect(station).toBeDefined();
-    expect(station?.name).toBe('Gimnazija');
+    expect(station?.name).toBe('Tehnička škola');
   });
 
   it('getStationById should return undefined for invalid ID', () => {

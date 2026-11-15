@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppStore, useBusStore, useEnergyStore } from '@/stores';
+import { useAppStore, useTramStore, useEnergyStore } from '@/stores';
 import { stations } from '@/data/stations';
 import { t } from '@/i18n/bs';
 import { formatRelativeTime } from '@/utils/helpers';
@@ -34,7 +34,7 @@ function ChallengeIcon() {
 }
 
 function StationCard({ station, onChange }: { station: typeof stations[0] | null; onChange: () => void }) {
-  const nextBus = useBusStore(state => state.arrivals[0]);
+  const nextTram = useTramStore(state => state.arrivals[0]);
   const energy = useEnergyStore(state => state.currentData);
 
   if (!station) {
@@ -77,22 +77,22 @@ function StationCard({ station, onChange }: { station: typeof stations[0] | null
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 'var(--spacing-sm)', padding: '0 var(--spacing-md) var(--spacing-md)' }}>
         <div style={{ background: 'var(--color-light)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-sm)', minHeight: '80px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <div>
-            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '2px' }}>{t('home.nextBus')}</p>
-            {nextBus ? (
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '2px' }}>{t('home.nextTram')}</p>
+            {nextTram ? (
               <>
-                <p style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-text)' }}>Linija {nextBus.lineId.replace('line-', '')}</p>
-                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-light)' }}>{nextBus.destination}</p>
+                <p style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-text)' }}>Linija {nextTram.lineId.replace('line-', '')}</p>
+                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-light)' }}>{nextTram.destination}</p>
               </>
             ) : (
-              <p style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-text-muted)' }}>{t('bus.noArrivals')}</p>
+              <p style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-text-muted)' }}>{t('tram.noArrivals')}</p>
             )}
           </div>
-          {nextBus && (
+          {nextTram && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 'var(--spacing-xs)', borderTop: '1px solid var(--color-border)' }}>
-              <span style={{ fontSize: 'var(--text-xl)', fontWeight: 700, color: nextBus.delay > 0 ? 'var(--color-error)' : 'var(--color-success)' }}>
-                {nextBus.delay > 0 ? t('home.delayed').replace('X', String(nextBus.delay)) : t('home.now')}
+              <span style={{ fontSize: 'var(--text-xl)', fontWeight: 700, color: nextTram.delay > 0 ? 'var(--color-error)' : 'var(--color-success)' }}>
+                {nextTram.delay > 0 ? t('home.delayed').replace('X', String(nextTram.delay)) : t('home.now')}
               </span>
-              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>{formatRelativeTime(nextBus.estimatedTime)}</span>
+              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>{formatRelativeTime(nextTram.estimatedTime)}</span>
             </div>
           )}
         </div>
@@ -125,10 +125,10 @@ export function HomeScreen() {
   const selectedStation = allStations.find(s => s.id === selectedStationId) ?? null;
 
   useEffect(() => {
-    const unsubBus = useBusStore.getState().subscribeToStation(selectedStationId || allStations[0].id);
+    const unsubTram = useTramStore.getState().subscribeToStation(selectedStationId || allStations[0].id);
     const unsubEnergy = useEnergyStore.getState().subscribe();
     return () => {
-      unsubBus();
+      unsubTram();
       unsubEnergy();
     };
   }, [selectedStationId]);

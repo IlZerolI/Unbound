@@ -26,7 +26,7 @@ export function SettingsScreen() {
       setNotifyEnabled(permission === 'granted');
       await setUserPreferences({ notificationsEnabled: permission === 'granted' });
     } else {
-      alert(t('bus.notifyInfo'));
+      alert(t('tram.notifyInfo'));
     }
   };
 
@@ -121,8 +121,8 @@ export function SettingsScreen() {
         <div style={{ background: 'var(--color-white)', borderRadius: 'var(--radius-lg)', padding: 'var(--spacing-md)', border: '1px solid var(--color-border)' }}>
           <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', minHeight: 'var(--touch-target)' }}>
             <div>
-              <p style={{ fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-text)' }}>{t('bus.notifyMe')}</p>
-              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>Primajte obavijesti o dolasku autobusa</p>
+              <p style={{ fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-text)' }}>{t('tram.notifyMe')}</p>
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>Primajte obavijesti o dolasku tramvaja</p>
             </div>
             <button
               role="switch"
@@ -153,7 +153,7 @@ export function SettingsScreen() {
             {t('settings.dataStoredLocally')}
           </p>
           <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', lineHeight: 1.6 }}>
-            Lokacija se koristi samo za prikaz najbližih stanica i ne šalje se nikakvom serveru.
+            Lokacija se koristi samo za prikaz najbližih stajališta i ne šalje se nikakvom serveru.
             Prijave problema i glasovi u anketama ostaju isključivo na vašem uređaju.
           </p>
         </div>

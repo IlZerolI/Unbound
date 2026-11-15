@@ -109,7 +109,7 @@ function SmartBenchCard() {
           <path d="M2 16V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8" />
           <path d="M6 16v6M18 16v6" />
         </svg>
-        <p style={{ color: 'var(--color-text-muted)' }}>Ova stanica nema pametnu klupu</p>
+        <p style={{ color: 'var(--color-text-muted)' }}>Ovo stajalište nema pametnu klupu</p>
       </div>
     );
   }
@@ -151,7 +151,7 @@ function BikeStationCard() {
           <path d="M1 18h3.06M7 18H6.06M17.94 18H21M10.94 18H13" />
           <path d="M18 18V7a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v11" />
         </svg>
-        <p style={{ color: 'var(--color-text-muted)' }}>Ova stanica nema bicikl stanicu</p>
+        <p style={{ color: 'var(--color-text-muted)' }}>Ovo stajalište nema bicikl stajalište</p>
       </div>
     );
   }

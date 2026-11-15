@@ -4,7 +4,7 @@ import { useAppStore, initializeApp } from '@/stores';
 import { t } from '@/i18n/bs';
 import { Layout } from '@/components/Layout';
 import { HomeScreen } from '@/screens/HomeScreen';
-import { BusScreen } from '@/screens/BusScreen';
+import { TramScreen } from '@/screens/TramScreen';
 import { EnergyScreen } from '@/screens/EnergyScreen';
 import { SafeStopScreen } from '@/screens/SafeStopScreen';
 import { ReportScreen } from '@/screens/ReportScreen';
@@ -57,7 +57,7 @@ function AppContent() {
       <Layout>
         <Routes>
           <Route path="/" element={<HomeScreen />} />
-          <Route path="/bus" element={<BusScreen />} />
+          <Route path="/tram" element={<TramScreen />} />
           <Route path="/energy" element={<EnergyScreen />} />
           <Route path="/safe-stop" element={<SafeStopScreen />} />
           <Route path="/report" element={<ReportScreen />} />

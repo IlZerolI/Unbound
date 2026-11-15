@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useAppStore, useBusStore } from '@/stores';
+import { useAppStore, useTramStore } from '@/stores';
 import { t } from '@/i18n/bs';
 import { formatRelativeTime } from '@/utils/helpers';
-import { BusArrival, Station } from '@/types';
+import { TramArrival, Station } from '@/types';
 import { stations, getLineById } from '@/data/stations';
 import { haversineDistance } from '@/utils/helpers';
 
@@ -14,12 +14,13 @@ interface StationWithSvg extends Station {
   svgY: number;
 }
 
-function BusIcon({ color, rotation = 0 }: { color: string; rotation?: number }) {
+function TramIcon({ color, rotation = 0 }: { color: string; rotation?: number }) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ transform: `rotate(${rotation}deg)` }} aria-hidden="true">
-      <path d="M8 6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8H4V8a2 2 0 0 1 2-2h2V6Z" />
-      <circle cx="8" cy="18" r="2" />
-      <circle cx="16" cy="18" r="2" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ transform: `rotate(${rotation}deg)` }} aria-hidden="true">
+      <path d="M4 17h16" />
+      <path d="M4 17l-1.5 -6h19l-1.5 6" />
+      <circle cx="7" cy="17" r="1" />
+      <circle cx="17" cy="17" r="1" />
     </svg>
   );
 }
@@ -55,7 +56,7 @@ function StationMarker({ station, isSelected, onClick }: { station: StationWithS
   );
 }
 
-function BusMarker({ arrival, lineColor, progress, index }: { arrival: BusArrival; lineColor: string; progress: number; index: number }) {
+function TramMarker({ arrival, lineColor, progress, index }: { arrival: TramArrival; lineColor: string; progress: number; index: number }) {
   const station = stations.find(s => s.id === arrival.stationId);
   if (!station) return null;
 
@@ -64,7 +65,6 @@ function BusMarker({ arrival, lineColor, progress, index }: { arrival: BusArriva
   const endLat = station.latitude;
   const endLng = station.longitude;
 
-  // Used for potential future position interpolation
   void (startLat + (endLat - startLat) * progress);
   void (startLng + (endLng - startLng) * progress);
 
@@ -72,7 +72,7 @@ function BusMarker({ arrival, lineColor, progress, index }: { arrival: BusArriva
 
   return (
     <g key={`${arrival.id}-${index}`} filter="drop-shadow(0 2px 4px rgba(0,0,0,0.2))">
-      <BusIcon color={lineColor} rotation={-angle + 90} />
+      <TramIcon color={lineColor} rotation={-angle + 90} />
     </g>
   );
 }
@@ -105,7 +105,7 @@ function StationConnections() {
   );
 }
 
-function MapView({ arrivals, selectedStationId, onStationClick }: { arrivals: BusArrival[]; selectedStationId: string | null; onStationClick: (id: string) => void }) {
+function MapView({ arrivals, selectedStationId, onStationClick }: { arrivals: TramArrival[]; selectedStationId: string | null; onStationClick: (id: string) => void }) {
   const bounds = getMapBounds();
   const [progressMap, setProgressMap] = useState<Record<string, number>>({});
 
@@ -142,7 +142,7 @@ function MapView({ arrivals, selectedStationId, onStationClick }: { arrivals: Bu
         viewBox={`0 0 ${MAP_SIZE} ${MAP_SIZE}`}
         style={{ background: 'var(--color-light)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}
         role="img"
-        aria-label={t('bus.map')}
+        aria-label={t('tram.map')}
       >
         <StationConnections />
         {stationsWithSvg.map((station) => (
@@ -157,7 +157,7 @@ function MapView({ arrivals, selectedStationId, onStationClick }: { arrivals: Bu
           const line = getLineById(arrival.lineId);
           const lineColor = line?.color || 'var(--color-primary)';
           const progress = progressMap[`${arrival.id}-${i}`] || 0;
-          return <BusMarker key={`${arrival.id}-${i}`} arrival={arrival} lineColor={lineColor} progress={progress} index={i} />;
+          return <TramMarker key={`${arrival.id}-${i}`} arrival={arrival} lineColor={lineColor} progress={progress} index={i} />;
         })}
       </svg>
       <div style={{ position: 'absolute', bottom: 'var(--spacing-sm)', left: 'var(--spacing-sm)', right: 'var(--spacing-sm)', display: 'flex', justifyContent: 'center', gap: 'var(--spacing-md)', flexWrap: 'wrap' }}>
@@ -173,18 +173,19 @@ function MapView({ arrivals, selectedStationId, onStationClick }: { arrivals: Bu
   );
 }
 
-function ArrivalsList({ arrivals, selectedStationId }: { arrivals: BusArrival[]; selectedStationId: string | null }) {
+function ArrivalsList({ arrivals, selectedStationId }: { arrivals: TramArrival[]; selectedStationId: string | null }) {
   const stationArrivals = arrivals.filter(a => a.stationId === selectedStationId);
 
   if (stationArrivals.length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: 'var(--spacing-xl)', color: 'var(--color-text-muted)' }}>
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} style={{ marginBottom: 'var(--spacing-sm)', opacity: 0.5 }} aria-hidden="true">
-          <path d="M8 6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8H4V8a2 2 0 0 1 2-2h2V6Z" />
-          <circle cx="8" cy="18" r="2" />
-          <circle cx="16" cy="18" r="2" />
+          <path d="M4 17h16" />
+          <path d="M4 17l-1.5 -6h19l-1.5 6" />
+          <circle cx="7" cy="17" r="1" />
+          <circle cx="17" cy="17" r="1" />
         </svg>
-        <p>{t('bus.noArrivals')}</p>
+        <p>{t('tram.noArrivals')}</p>
       </div>
     );
   }
@@ -216,12 +217,12 @@ function ArrivalsList({ arrivals, selectedStationId }: { arrivals: BusArrival[];
                 </span>
                 {isDelayed && (
                   <span style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--color-error)', background: 'var(--color-error-light)', padding: '1px 6px', borderRadius: 'var(--radius-full)' }}>
-                    {t('bus.delayed')} {arrival.delay} min
+                    {t('tram.delayed')} {arrival.delay} min
                   </span>
                 )}
                 {!isDelayed && (
                   <span style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--color-success)', background: 'var(--color-success-light)', padding: '1px 6px', borderRadius: 'var(--radius-full)' }}>
-                    {t('bus.onTime')}
+                    {t('tram.onTime')}
                   </span>
                 )}
               </div>
@@ -241,9 +242,9 @@ function ArrivalsList({ arrivals, selectedStationId }: { arrivals: BusArrival[];
   );
 }
 
-export function BusScreen() {
+export function TramScreen() {
   const { selectedStationId, setSelectedStation, stations: allStations } = useAppStore();
-  const { arrivals, subscribeToStation } = useBusStore();
+  const { arrivals, subscribeToStation } = useTramStore();
   const selectedStation = allStations.find(s => s.id === selectedStationId || allStations[0].id);
   const [showNotificationInfo, setShowNotificationInfo] = useState(false);
 
@@ -260,17 +261,17 @@ export function BusScreen() {
 
     if (Notification.permission === 'granted') {
       new Notification(t('app.name'), {
-        body: `${t('bus.line')} ${selectedStationId}`,
-        icon: '/student-stop/icons/icon-192x192.svg',
-        badge: '/student-stop/icons/icon-72x72.svg',
-        tag: 'bus-arrival'
+        body: `${t('tram.line')} ${selectedStationId}`,
+        icon: '/student_stop/icons/icon-192x192.svg',
+        badge: '/student_stop/icons/icon-72x72.svg',
+        tag: 'tram-arrival'
       });
     } else if (Notification.permission === 'default') {
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
         new Notification(t('app.name'), {
-          body: `${t('bus.notifyEnabled')}`,
-          icon: '/student-stop/icons/icon-192x192.svg'
+          body: `${t('tram.notifyEnabled')}`,
+          icon: '/student_stop/icons/icon-192x192.svg'
         });
       }
     } else {
@@ -279,25 +280,25 @@ export function BusScreen() {
   };
 
   return (
-    <div className="bus-screen" style={{ padding: 'var(--spacing-md)', paddingBottom: 'calc(var(--nav-height) + var(--safe-area-bottom) + var(--spacing-md))' }}>
+    <div className="tram-screen" style={{ padding: 'var(--spacing-md)', paddingBottom: 'calc(var(--nav-height) + var(--safe-area-bottom) + var(--spacing-md))' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--spacing-md)', flexWrap: 'wrap', gap: 'var(--spacing-sm)' }}>
         <div>
-          <h1 className="section-title" style={{ marginBottom: 'var(--spacing-xs)' }}>{t('bus.title')}</h1>
+          <h1 className="section-title" style={{ marginBottom: 'var(--spacing-xs)' }}>{t('tram.title')}</h1>
           <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>
-            {selectedStation ? `${selectedStation.name} • ${t('bus.arrivals')}` : t('bus.loading')}
+            {selectedStation ? `${selectedStation.name} • ${t('tram.arrivals')}` : t('tram.loading')}
           </p>
         </div>
         <button
           className="btn btn-primary"
           onClick={handleNotify}
-          aria-label={t('bus.notifyMe')}
+          aria-label={t('tram.notifyMe')}
           style={{ minHeight: 'var(--touch-target)' }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
             <path d="M13.73 21a2 2 0 0 1-3.46 0" />
           </svg>
-          {t('bus.notifyMe')}
+          {t('tram.notifyMe')}
         </button>
       </div>
 
@@ -305,7 +306,7 @@ export function BusScreen() {
         <MapView arrivals={arrivals} selectedStationId={selectedStationId || allStations[0].id} onStationClick={setSelectedStation} />
       </div>
 
-      <h2 className="section-title">{t('bus.arrivals')}</h2>
+      <h2 className="section-title">{t('tram.arrivals')}</h2>
       <ArrivalsList arrivals={arrivals} selectedStationId={selectedStationId || allStations[0].id} />
 
       {showNotificationInfo && (
@@ -316,7 +317,7 @@ export function BusScreen() {
           border: '1px solid var(--color-border)', padding: 'var(--spacing-md)', zIndex: 200
         }} role="alert">
           <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text)', marginBottom: 'var(--spacing-sm)' }}>
-            {t('bus.notifyInfo')}
+            {t('tram.notifyInfo')}
           </p>
           <button className="btn btn-primary" onClick={() => setShowNotificationInfo(false)} style={{ width: '100%' }}>
             {t('common.ok')}

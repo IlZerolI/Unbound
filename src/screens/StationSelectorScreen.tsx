@@ -42,7 +42,7 @@ export function StationSelectorScreen() {
                   <span className="badge badge-info" style={{ fontSize: 'var(--text-xs)' }}>🔥 Pametna klupa</span>
                 )}
                 {station.hasBikeStation && (
-                  <span className="badge badge-info" style={{ fontSize: 'var(--text-xs)' }}>🚲 Bicikl stanica ({station.bikeCapacity})</span>
+                  <span className="badge badge-info" style={{ fontSize: 'var(--text-xs)' }}>🚲 Bicikl stajalište ({station.bikeCapacity})</span>
                 )}
               </div>
             </div>

@@ -66,7 +66,7 @@ export function parseStationFromUrl(): string | null {
 }
 
 export function generateShareText(stationName: string, url: string): string {
-  return `Prati autobus na stanici ${stationName} putem Student Stop aplikacije: ${url}`;
+  return `Prati tramvaj na stajalištu ${stationName} putem Student Stop aplikacije: ${url}`;
 }
 
 export function debounce<T extends (...args: any[]) => any>(

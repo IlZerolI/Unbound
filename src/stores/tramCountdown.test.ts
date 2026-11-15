@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { formatRelativeTime } from '@/utils/helpers';
 
-describe('Bus countdown', () => {
+describe('Tram countdown', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2024-01-15T12:00:00Z'));
