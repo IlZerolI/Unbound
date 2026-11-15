@@ -9,7 +9,7 @@ export function StationSelectorScreen() {
 
   const handleSelect = (stationId: string) => {
     setSelectedStation(stationId);
-    navigate('/');
+    navigate(`/?station=${stationId}`);
   };
 
   return (
