@@ -3,6 +3,7 @@ import { tramLines, stations } from './stations';
 
 const DELAY_PROBABILITY = 0.3;
 const MAX_DELAY_MINUTES = 10;
+const OCCUPANCY_OPTIONS: ('empty' | 'half' | 'full')[] = ['empty', 'half', 'full'];
 
 function generateArrivalsForStation(stationId: string): TramArrival[] {
   const station = stations.find(s => s.id === stationId);
@@ -34,7 +35,8 @@ function generateArrivalsForStation(stationId: string): TramArrival[] {
         delay,
         latitude: lat,
         longitude: lng,
-        vehicleId: `TR-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`
+        vehicleId: `TR-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`,
+        occupancy: OCCUPANCY_OPTIONS[Math.floor(Math.random() * OCCUPANCY_OPTIONS.length)]
       });
     }
   });
@@ -149,7 +151,8 @@ export class MockTramProvider implements TramProvider {
         delay,
         latitude: station.latitude,
         longitude: station.longitude,
-        vehicleId: `TR-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`
+        vehicleId: `TR-${line.number}-${Math.floor(Math.random() * 100).toString().padStart(3, '0')}`,
+        occupancy: OCCUPANCY_OPTIONS[Math.floor(Math.random() * OCCUPANCY_OPTIONS.length)]
       });
     }
 

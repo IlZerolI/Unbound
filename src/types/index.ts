@@ -29,6 +29,7 @@ export interface TramArrival {
   latitude: number;
   longitude: number;
   vehicleId: string;
+  occupancy: 'empty' | 'half' | 'full';
 }
 
 export interface EnergyData {

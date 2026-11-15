@@ -173,6 +173,109 @@ function MapView({ arrivals, selectedStationId, onStationClick }: { arrivals: Tr
   );
 }
 
+function OccupancyBadge({ occupancy }: { occupancy: 'empty' | 'half' | 'full' }) {
+  const configs = {
+    empty: { label: t('tram.occupancy.empty'), desc: t('tram.occupancy.emptyDesc'), color: 'var(--color-success)', bg: 'var(--color-success-light)', icon: '🟢' },
+    half: { label: t('tram.occupancy.half'), desc: t('tram.occupancy.halfDesc'), color: 'var(--color-warning)', bg: 'var(--color-warning-light)', icon: '🟡' },
+    full: { label: t('tram.occupancy.full'), desc: t('tram.occupancy.fullDesc'), color: 'var(--color-error)', bg: 'var(--color-error-light)', icon: '🔴' }
+  };
+  const cfg = configs[occupancy];
+  return (
+    <span style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: cfg.color, background: cfg.bg, padding: '2px 8px', borderRadius: 'var(--radius-full)', display: 'inline-flex', alignItems: 'center', gap: '4px' }} title={cfg.desc}>
+      {cfg.icon} {cfg.label}
+    </span>
+  );
+}
+
+function EcoCalculator() {
+  const [distance, setDistance] = useState(5);
+  const [tripsPerWeek, setTripsPerWeek] = useState(10);
+  const [results, setResults] = useState<{ weekly: number; monthly: number; yearly: number; trees: number } | null>(null);
+
+  const calculate = () => {
+    const carEmissionPerKm = 120; // g CO2/km
+    const tramEmissionPerKm = 5; // g CO2/km (solar/kinetic)
+    const savingsPerKm = carEmissionPerKm - tramEmissionPerKm;
+    const weeklyKm = distance * 2 * tripsPerWeek; // round trip
+    const weekly = weeklyKm * savingsPerKm;
+    const monthly = weekly * 4.33;
+    const yearly = weekly * 52;
+    const trees = yearly / 22000; // 22kg CO2 per tree per year
+    setResults({ weekly, monthly, yearly, trees });
+  };
+
+  useEffect(() => {
+    calculate();
+  }, [distance, tripsPerWeek]);
+
+  if (!results) return null;
+
+  return (
+    <section style={{ marginTop: 'var(--spacing-xl)', paddingTop: 'var(--spacing-xl)', borderTop: '1px solid var(--color-border)' }}>
+      <h2 className="section-title">{t('energy.calculator.title')}</h2>
+      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', marginBottom: 'var(--spacing-md)' }}>
+        {t('energy.calculator.subtitle')}
+      </p>
+
+      <div className="card" style={{ padding: 'var(--spacing-md)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-lg)' }}>
+          <div>
+            <label className="label">{t('energy.calculator.distanceLabel')}</label>
+            <input
+              type="number"
+              min="1"
+              max="50"
+              value={distance}
+              onChange={(e) => setDistance(Number(e.target.value))}
+              className="input"
+              style={{ maxWidth: '120px' }}
+            />
+          </div>
+          <div>
+            <label className="label">{t('energy.calculator.tripsPerWeek')}</label>
+            <input
+              type="number"
+              min="1"
+              max="30"
+              value={tripsPerWeek}
+              onChange={(e) => setTripsPerWeek(Number(e.target.value))}
+              className="input"
+              style={{ maxWidth: '120px' }}
+            />
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-md)' }}>
+          <div style={{ textAlign: 'center', padding: 'var(--spacing-md)', background: 'var(--color-light)', borderRadius: 'var(--radius-md)' }}>
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>{t('energy.calculator.weekly')}</p>
+            <p style={{ fontSize: 'var(--text-xl)', fontWeight: 700, color: 'var(--color-success)' }}>{(results.weekly / 1000).toFixed(1)} kg CO₂</p>
+          </div>
+          <div style={{ textAlign: 'center', padding: 'var(--spacing-md)', background: 'var(--color-light)', borderRadius: 'var(--radius-md)' }}>
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>{t('energy.calculator.monthly')}</p>
+            <p style={{ fontSize: 'var(--text-xl)', fontWeight: 700, color: 'var(--color-success)' }}>{(results.monthly / 1000).toFixed(1)} kg CO₂</p>
+          </div>
+          <div style={{ textAlign: 'center', padding: 'var(--spacing-md)', background: 'var(--color-light)', borderRadius: 'var(--radius-md)' }}>
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>{t('energy.calculator.yearly')}</p>
+            <p style={{ fontSize: 'var(--text-xl)', fontWeight: 700, color: 'var(--color-success)' }}>{(results.yearly / 1000).toFixed(1)} kg CO₂</p>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--spacing-md)', padding: 'var(--spacing-md)', background: 'var(--color-success-light)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-success)' }}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+            <path d="M12 6v6l4 2" />
+          </svg>
+          <div>
+            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-success)', fontWeight: 600 }}>
+              {t('energy.calculator.treesEquivalent')}: <strong>{results.trees.toFixed(1)}</strong> {t('energy.calculator.tip')}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ArrivalsList({ arrivals, selectedStationId }: { arrivals: TramArrival[]; selectedStationId: string | null }) {
   const stationArrivals = arrivals.filter(a => a.stationId === selectedStationId);
 
@@ -211,10 +314,11 @@ function ArrivalsList({ arrivals, selectedStationId }: { arrivals: TramArrival[]
                 </span>
                 <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>{arrival.destination}</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', marginTop: '2px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', marginTop: '2px', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-light)' }}>
                   {formatRelativeTime(arrival.estimatedTime)}
                 </span>
+                <OccupancyBadge occupancy={arrival.occupancy} />
                 {isDelayed && (
                   <span style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--color-error)', background: 'var(--color-error-light)', padding: '1px 6px', borderRadius: 'var(--radius-full)' }}>
                     {t('tram.delayed')} {arrival.delay} min
@@ -308,6 +412,8 @@ export function TramScreen() {
 
       <h2 className="section-title">{t('tram.arrivals')}</h2>
       <ArrivalsList arrivals={arrivals} selectedStationId={selectedStationId || allStations[0].id} />
+
+      <EcoCalculator />
 
       {showNotificationInfo && (
         <div style={{

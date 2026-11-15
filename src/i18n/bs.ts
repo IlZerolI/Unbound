@@ -65,7 +65,16 @@ export const translations = {
     notifyInfo: 'Omogućite obavijesti u postavkama pregledača. Na iPhoneu prvo dodajte aplikaciju na početni ekran (Share → Dodaj na početni ekran).',
     noArrivals: 'Nema planiranih dolazaka',
     loading: 'Učitavanje...',
-    error: 'Greška pri učitavanju podataka'
+    error: 'Greška pri učitavanju podataka',
+    occupancy: {
+      label: 'Zauzeće',
+      empty: 'Prazan',
+      half: 'Polupun',
+      full: 'Prepun',
+      emptyDesc: 'Mnoga slobodna sjedala',
+      halfDesc: 'Nekoliko slobodnih sjedala',
+      fullDesc: 'Prema kapacitetu, stajte'
+    }
   },
   energy: {
     title: 'Praćenje energije',
@@ -83,7 +92,20 @@ export const translations = {
     discharging: 'Praznjenje',
     stable: 'Stabilno',
     live: 'Uživo',
-    simulator: 'Simulator'
+    simulator: 'Simulator',
+    calculator: {
+      title: 'Ekološki kalkulator',
+      subtitle: 'Koliko CO₂ uštedite korištenjem tramvaja umjesto automobila',
+      distanceLabel: 'Udaljenost vožnje (km)',
+      tripsPerWeek: 'Vožnji tjedno',
+      calculate: 'Izračunaj',
+      weekly: 'Tjedno',
+      monthly: 'Mjesečno',
+      yearly: 'Godišnje',
+      co2Saved: 'Ušteđeno CO₂',
+      treesEquivalent: 'Ekvivalent stabala',
+      tip: 'Prosječno stablo apsorbira ~22kg CO₂/god'
+    }
   },
   safeStop: {
     title: 'Sigurno stajalište',
