@@ -7,14 +7,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const packageJson = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf-8'));
-const homepage = packageJson.homepage || 'https://TVOJE_IME.github.io/student-stop/';
+const homepage = packageJson.homepage || 'https://IlZerolI.github.io/student_stop/';
 const baseUrl = homepage.replace(/\/$/, '');
 
 const stations = [
-  { id: 'gimnazija', name: 'Gimnazija' },
-  { id: 'trg-slobode', name: 'Trg Slobode' },
-  { id: 'medicinska-skola', name: 'Medicinska škola' },
-  { id: 'autobuska-stanica', name: 'Autobuska stanica' }
+  { id: 'tehnicka-skola', name: 'Tehnička škola' },
+  { id: 'pocetno-stajaliste', name: 'Početno stajalište' },
+  { id: 'zmaja-od-bosne', name: 'Zmaja od Bosne' },
+  { id: 'marsal-tito', name: 'Maršal Tito' },
+  { id: 'skenderija', name: 'Skenderija' },
+  { id: 'univerzitet', name: 'Univerzitet' }
 ];
 
 const QR_OPTIONS = {
@@ -79,11 +81,11 @@ function generatePrintHtml(stations: Array<{ id: string; name: string }>, baseUr
   const stationCards = stations.map(station => `
     <div class="station-card">
       <div class="qr-container">
-        <img src="station-${station.id}.svg" alt="QR kod za stanicu ${station.name}" />
+        <img src="station-${station.id}.svg" alt="QR kod za stajalište ${station.name}" />
       </div>
       <div class="station-info">
         <h2>${station.name}</h2>
-        <p class="scan-text">Skeniraj i prati autobus</p>
+        <p class="scan-text">Skeniraj i prati tramvaj</p>
         <p class="url">${baseUrl}/#/?station=${station.id}</p>
       </div>
     </div>
@@ -132,10 +134,10 @@ function generatePrintHtml(stations: Array<{ id: string; name: string }>, baseUr
       </div>
       <div class="logo-text">
         <h1>STUDENT STOP</h1>
-        <p>Pametna stanica za pametnu mladež</p>
+        <p>Pametno stajalište za pametnu mladež</p>
       </div>
     </div>
-    <p class="subtitle">QR kodovi za sve stanice – spremni za štampu na A4</p>
+    <p class="subtitle">QR kodovi za sva stajališta – spremni za štampu na A4</p>
   </div>
 
   <div class="grid">
