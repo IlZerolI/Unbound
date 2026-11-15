@@ -121,8 +121,11 @@ function StationCard({ station, onChange }: { station: typeof stations[0] | null
 }
 
 export function HomeScreen() {
-  const { selectedStationId, setSelectedStation, stations: allStations } = useAppStore();
-  const selectedStation = allStations.find(s => s.id === selectedStationId) ?? null;
+  const selectedStationId = useAppStore(state => state.selectedStationId);
+  const setSelectedStation = useAppStore(state => state.setSelectedStation);
+  const getStationById = useAppStore(state => state.getStationById);
+  const allStations = useAppStore(state => state.stations);
+  const selectedStation = selectedStationId ? getStationById(selectedStationId) : null;
 
   useEffect(() => {
     const unsubTram = useTramStore.getState().subscribeToStation(selectedStationId || allStations[0].id);
