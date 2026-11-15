@@ -7,7 +7,7 @@ import { stations, getLineById } from '@/data/stations';
 import { haversineDistance } from '@/utils/helpers';
 
 const MAP_SIZE = 300;
-const STATION_RADIUS = 8;
+const STATION_RADIUS = 10;
 
 interface StationWithSvg extends Station {
   svgX: number;
@@ -135,12 +135,13 @@ function MapView({ arrivals, selectedStationId, onStationClick }: { arrivals: Tr
   }));
 
   return (
-    <div style={{ width: '100%', maxWidth: `${MAP_SIZE}px`, margin: '0 auto', position: 'relative' }}>
+    <div style={{ width: '100%', maxWidth: '380px', margin: '0 auto', position: 'relative', aspectRatio: '1 / 1' }}>
       <svg
-        width={MAP_SIZE}
-        height={MAP_SIZE}
+        width="100%"
+        height="100%"
         viewBox={`0 0 ${MAP_SIZE} ${MAP_SIZE}`}
-        style={{ background: 'var(--color-light)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}
+        preserveAspectRatio="xMidYMid meet"
+        style={{ background: 'var(--color-light)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', width: '100%', height: '100%' }}
         role="img"
         aria-label={t('tram.map')}
       >
