@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 
 export default defineConfig({
-  base: '/student_stop/',
+  base: '/Unbound/',
   plugins: [
     react(),
     VitePWA({
@@ -18,8 +18,8 @@ export default defineConfig({
         background_color: '#F4F7F5',
         display: 'standalone',
         orientation: 'portrait-primary',
-        scope: '/student_stop/',
-        start_url: '/student_stop/',
+        scope: '/Unbound/',
+        start_url: '/Unbound/',
         icons: [
           {
             src: 'icons/icon-72x72.svg',
@@ -77,14 +77,14 @@ export default defineConfig({
             name: 'Tramvaj',
             short_name: 'Tramvaj',
             description: 'Prati dolaske tramvaja u realnom vremenu',
-            url: '/student_stop/#/tram',
+            url: '/Unbound/#/tram',
             icons: [{ src: 'icons/bus-shortcut.svg', sizes: '192x192', type: 'image/svg+xml' }]
           },
           {
             name: 'Energija',
             short_name: 'Energija',
             description: 'Praćenje energije stanice',
-            url: '/student_stop/#/energy',
+            url: '/Unbound/#/energy',
             icons: [{ src: 'icons/energy-shortcut.svg', sizes: '192x192', type: 'image/svg+xml' }]
           }
         ]

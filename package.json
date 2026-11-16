@@ -2,7 +2,7 @@
   "name": "student-stop",
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://IlZerolI.github.io/student_stop/",
+  "homepage": "https://ilzeroli.github.io/Unbound/",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

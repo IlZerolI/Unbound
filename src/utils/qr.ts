@@ -35,7 +35,7 @@ export async function generateStationQR(
   stationId: string,
   baseUrl: string
 ): Promise<{ png: string; svg: string }> {
-  const url = `${baseUrl}/student_stop/#/?station=${stationId}`;
+  const url = `${baseUrl}/Unbound/#/?station=${stationId}`;
   const [png, svg] = await Promise.all([
     generateQRCode(url, { width: 1000 }),
     generateQRCodeSVG(url, { width: 1000 })
@@ -44,7 +44,7 @@ export async function generateStationQR(
 }
 
 export async function generateGeneralQR(baseUrl: string): Promise<{ png: string; svg: string }> {
-  const url = `${baseUrl}/student_stop/`;
+  const url = `${baseUrl}/Unbound/`;
   const [png, svg] = await Promise.all([
     generateQRCode(url, { width: 1000 }),
     generateQRCodeSVG(url, { width: 1000 })
