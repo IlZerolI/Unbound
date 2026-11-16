@@ -1,9 +1,9 @@
 const teamMembers = [
-  { name: 'Emina Abaz', role: 'Developer', photo: 'team/abaz-emina.jpg' },
-  { name: 'Irmela Mršo', role: 'Developer', photo: 'team/mrso-irmela.jpg' },
-  { name: 'Denin Jusufranić', role: 'Developer', photo: 'team/jusufranic-denin.jpg' },
-  { name: 'Ema Korać', role: 'Developer', photo: 'team/korac-ema.jpg' },
-  { name: 'Sumeja Ajanović', role: 'Developer', photo: 'team/ajanovic-sumeja.jpg' }
+  { name: 'Emina Abaz', photo: 'team/abaz-emina.jpg' },
+  { name: 'Irmela Mršo', photo: 'team/mrso-irmela.jpg' },
+  { name: 'Denin Jusufranić', photo: 'team/jusufranic-denin.jpg' },
+  { name: 'Ema Korać', photo: 'team/korac-ema.jpg' },
+  { name: 'Sumeja Ajanović', photo: 'team/ajanovic-sumeja.jpg' }
 ];
 
 export function TeamScreen() {
@@ -11,9 +11,6 @@ export function TeamScreen() {
     <div className="team-screen" style={{ padding: 'var(--spacing-md)', paddingBottom: 'calc(var(--nav-height) + var(--safe-area-bottom) + var(--spacing-md))' }}>
       <header style={{ textAlign: 'center', marginBottom: 'var(--spacing-xl)' }}>
         <h1 className="section-title" style={{ marginBottom: 'var(--spacing-xs)' }}>Naš tim</h1>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', maxWidth: '400px', margin: '0 auto' }}>
-          Upoznajte tim iza Unbound aplikacije — mladi developeri koji stvaraju pametnija stajališta za našu zajednicu.
-        </p>
       </header>
 
       <div style={{
@@ -64,20 +61,10 @@ export function TeamScreen() {
             </div>
             <div>
               <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 700, color: 'var(--color-text)' }}>{member.name}</h3>
-              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-primary)', fontWeight: 600 }}>{member.role}</p>
             </div>
           </div>
         ))}
       </div>
-
-      <section style={{ marginTop: 'var(--spacing-xl)', paddingTop: 'var(--spacing-xl)', borderTop: '1px solid var(--color-border)', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-text)', marginBottom: 'var(--spacing-md)' }}>Naša misija</h2>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', maxWidth: '500px', margin: '0 auto', lineHeight: 1.6 }}>
-          Kroz Unbound, naš tim od 5 studenata razvija inovativno rješenje za praćenje tramvajskih dolazaka u Sarajevu.
-          Koristimo najnovije web tehnologije da stvaramo brzu, pristupačnu i ekološki svjesnu aplikaciju koja pomaže
-          našoj zajednici da pametnije koristi javni prevoz.
-        </p>
-      </section>
     </div>
   );
 }

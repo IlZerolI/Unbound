@@ -8,7 +8,8 @@ const navItems = [
   { path: '/', label: t('nav.home'), icon: HomeIcon },
   { path: '/tram', label: t('nav.tram'), icon: TramIcon },
   { path: '/energy', label: t('nav.energy'), icon: EnergyIcon },
-  { path: '/more', label: t('nav.more'), icon: MoreIcon }
+  { path: '/more', label: t('nav.more'), icon: MoreIcon },
+  { path: '/team', label: 'Naš tim', icon: TeamIcon }
 ] as const;
 
 function HomeIcon({ active }: { active: boolean }) {
@@ -46,6 +47,17 @@ function MoreIcon({ active }: { active: boolean }) {
       <circle cx="12" cy="12" r="1" />
       <circle cx="12" cy="5" r="1" />
       <circle cx="12" cy="19" r="1" />
+    </svg>
+  );
+}
+
+function TeamIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.5 : 2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
   );
 }
