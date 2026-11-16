@@ -268,6 +268,31 @@ export function Layout({ children }: LayoutProps) {
                 ))}
               </div>
             </div>
+
+            <div style={{ padding: 'var(--spacing-md)', borderTop: '1px solid var(--color-border)', marginTop: 'var(--spacing-md)' }}>
+              <NavLink
+                to="/team"
+                onClick={() => setShowMobileMenu(false)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)',
+                  padding: 'var(--spacing-md)', background: location.pathname === '/team' ? 'var(--color-primary-light)' : 'var(--color-white)',
+                  borderRadius: 'var(--radius-lg)', border: `2px solid ${location.pathname === '/team' ? 'var(--color-primary)' : 'var(--color-border)'}`,
+                  boxShadow: location.pathname === '/team' ? 'var(--shadow-md)' : 'var(--shadow-sm)',
+                  textDecoration: 'none', color: location.pathname === '/team' ? 'var(--color-primary)' : 'var(--color-text)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', background: location.pathname === '/team' ? 'var(--color-primary)' : 'var(--color-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: location.pathname === '/team' ? 'var(--color-white)' : 'var(--color-primary)', flexShrink: 0 }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <span style={{ fontSize: 'var(--text-base)', fontWeight: 600 }}>Naš tim</span>
+              </NavLink>
+            </div>
           </div>
         </div>
       )}

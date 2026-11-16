@@ -95,6 +95,11 @@ function MoreScreen() {
       title: t('more.sections.links'),
       items: [
         {
+          label: 'Naš tim',
+          type: 'link' as const,
+          path: '/team'
+        },
+        {
           label: t('more.links.privacy'),
           type: 'link' as const,
           path: '/settings'
