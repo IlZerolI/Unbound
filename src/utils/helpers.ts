@@ -57,7 +57,7 @@ export function formatDelay(minutes: number): string {
 }
 
 export function getStationUrl(stationId: string, baseUrl: string = window.location.origin): string {
-  return `${baseUrl}/student-stop/#/?station=${stationId}`;
+  return `${baseUrl}/student_stop/#/?station=${stationId}`;
 }
 
 export function parseStationFromUrl(): string | null {
