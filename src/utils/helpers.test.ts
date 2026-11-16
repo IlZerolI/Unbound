@@ -76,7 +76,7 @@ describe('helpers', () => {
   describe('getStationUrl', () => {
     it('should generate correct station URL', () => {
       const url = getStationUrl('gimnazija', 'https://example.com');
-      expect(url).toBe('https://example.com/student-stop/#/?station=gimnazija');
+      expect(url).toBe('https://example.com/Unbound/#/?station=gimnazija');
     });
   });
 
@@ -113,7 +113,7 @@ describe('helpers', () => {
       const text = generateShareText('Gimnazija', 'https://example.com/station');
       expect(text).toContain('Gimnazija');
       expect(text).toContain('https://example.com/station');
-      expect(text).toContain('Student Stop');
+      expect(text).toContain('Unbound');
     });
   });
 

@@ -94,7 +94,7 @@ let dbPromise: Promise<IDBPDatabase<StudentStopDB>> | null = null;
 
 function getDB(): Promise<IDBPDatabase<StudentStopDB>> {
   if (!dbPromise) {
-    dbPromise = openDB<StudentStopDB>('student-stop', 1, {
+    dbPromise = openDB<StudentStopDB>('unbound', 1, {
       upgrade(db) {
         const reportsStore = db.createObjectStore('reports', { keyPath: 'id' });
         reportsStore.createIndex('by-station', 'stationId');

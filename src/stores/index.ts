@@ -66,7 +66,7 @@ export const useAppStore = create<AppState>()(
       setHasHydrated: (value) => set({ hasHydrated: value })
     }),
     {
-      name: 'student-stop-prefs',
+      name: 'unbound-prefs',
       storage: createJSONStorage(() => localStorage),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);

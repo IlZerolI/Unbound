@@ -102,12 +102,12 @@ function MoreScreen() {
         {
           label: t('more.links.github'),
           type: 'external' as const,
-          path: 'https://github.com/IlZerolI/student_stop'
+          path: 'https://github.com/IlZerolI/Unbound'
         },
         {
           label: t('more.links.reportIssue'),
           type: 'external' as const,
-          path: 'https://github.com/IlZerolI/student_stop/issues'
+          path: 'https://github.com/IlZerolI/Unbound/issues'
         }
       ]
     }

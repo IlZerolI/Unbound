@@ -370,8 +370,8 @@ export function TramScreen() {
     if (Notification.permission === 'granted') {
       new Notification(t('app.name'), {
         body: t('tram.line') + ' ' + selectedStationId,
-        icon: '/student_stop/icons/icon-192x192.svg',
-        badge: '/student_stop/icons/icon-72x72.svg',
+        icon: '/Unbound/icons/icon-192x192.svg',
+        badge: '/Unbound/icons/icon-72x72.svg',
         tag: 'tram-arrival'
       });
     } else if (Notification.permission === 'default') {
@@ -379,7 +379,7 @@ export function TramScreen() {
       if (permission === 'granted') {
         new Notification(t('app.name'), {
           body: t('tram.notifyEnabled'),
-          icon: '/student_stop/icons/icon-192x192.svg'
+          icon: '/Unbound/icons/icon-192x192.svg'
         });
       }
     } else {
