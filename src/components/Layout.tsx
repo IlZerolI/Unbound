@@ -99,7 +99,6 @@ export function Layout({ children }: LayoutProps) {
           <div>
             <h1 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.2 }}>
               {t('app.name')}
-              <span style={{ fontSize: 'var(--text-xs)', fontWeight: 500, color: 'var(--color-text-muted)', marginLeft: 'var(--spacing-xs)' }}>by Unbound</span>
             </h1>
             {selectedStation && (
               <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }}>

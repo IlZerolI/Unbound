@@ -1,6 +1,6 @@
 export const translations = {
   app: {
-    name: 'Student Stop',
+    name: 'Unbound',
     tagline: 'Pametno stajalište za pametnu mladež'
   },
   nav: {
