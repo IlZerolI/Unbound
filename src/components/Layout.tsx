@@ -95,13 +95,11 @@ export function Layout({ children }: LayoutProps) {
         gap: 'var(--spacing-md)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', flex: 1 }}>
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}>
-            <rect width="32" height="32" rx="8" fill="var(--color-primary)" />
-            <path d="M8 16L14 22L24 10" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-          </svg>
+          <img src="/student_stop/unbound-logo.png" alt="Unbound" style={{ width: '32px', height: '32px', objectFit: 'contain', flexShrink: 0 }} />
           <div>
             <h1 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.2 }}>
               {t('app.name')}
+              <span style={{ fontSize: 'var(--text-xs)', fontWeight: 500, color: 'var(--color-text-muted)', marginLeft: 'var(--spacing-xs)' }}>by Unbound</span>
             </h1>
             {selectedStation && (
               <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }}>
