@@ -181,7 +181,7 @@ function MoreScreen() {
       ))}
 
       <div style={{ textAlign: 'center', padding: 'var(--spacing-xl)', color: 'var(--color-text-muted)', fontSize: 'var(--text-sm)' }}>
-        <img src="/student_stop/unbound-logo.png" alt="Unbound" style={{ width: '48px', height: '48px', objectFit: 'contain', margin: '0 auto var(--spacing-sm)' }} />
+        <img src="unbound-logo.png" alt="Unbound" style={{ width: '48px', height: '48px', objectFit: 'contain', margin: '0 auto var(--spacing-sm)' }} />
         <p style={{ fontWeight: 600 }}>{t('app.name')}</p>
         <p style={{ marginTop: 'var(--spacing-xs)' }}>Made with ❤️ for Sarajevo</p>
       </div>

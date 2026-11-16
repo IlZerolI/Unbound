@@ -95,7 +95,7 @@ export function Layout({ children }: LayoutProps) {
         gap: 'var(--spacing-md)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)', flex: 1 }}>
-          <img src="/student_stop/unbound-logo.png" alt="Unbound" style={{ width: '32px', height: '32px', objectFit: 'contain', flexShrink: 0 }} />
+          <img src="unbound-logo.png" alt="Unbound" style={{ width: '32px', height: '32px', objectFit: 'contain', flexShrink: 0 }} />
           <div>
             <h1 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.2 }}>
               {t('app.name')}

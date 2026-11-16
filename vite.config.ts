@@ -9,11 +9,11 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'unbound-logo.png'],
       manifest: {
-        name: 'Student Stop',
-        short_name: 'Student Stop',
-        description: 'Pametna autobuska stanica za srednjoškolce u BiH',
+        name: 'Unbound',
+        short_name: 'Unbound',
+        description: 'Pametno stajalište za pametnu mladež',
         theme_color: '#0B7A4B',
         background_color: '#F4F7F5',
         display: 'standalone',
@@ -74,17 +74,17 @@ export default defineConfig({
         screenshots: [],
         shortcuts: [
           {
-            name: 'Autobus',
-            short_name: 'Autobus',
-            description: 'Prati dolaske autobusa u realnom vremenu',
-            url: '/student-stop/#/bus',
+            name: 'Tramvaj',
+            short_name: 'Tramvaj',
+            description: 'Prati dolaske tramvaja u realnom vremenu',
+            url: '/student_stop/#/tram',
             icons: [{ src: 'icons/bus-shortcut.svg', sizes: '192x192', type: 'image/svg+xml' }]
           },
           {
             name: 'Energija',
             short_name: 'Energija',
             description: 'Praćenje energije stanice',
-            url: '/student-stop/#/energy',
+            url: '/student_stop/#/energy',
             icons: [{ src: 'icons/energy-shortcut.svg', sizes: '192x192', type: 'image/svg+xml' }]
           }
         ]
